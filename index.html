@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+
+<head>
+	<script type="text/javascript" src="src/imageCreator.js"></script>
+	<script type="text/javascript">
+
+		window.addEventListener('load', function(){
+			generateImage();
+		});
+		
+		function showScale(arr){
+			var imgCreator = imageCreator({
+				mapper: arr
+			});
+	
+			var colors = ['black', 'red', 'blue', 'silver', '#F0DB4F'];
+
+			var images = document.getElementById('images');
+			
+			for(var i=1; i<6; i++){
+				var img = document.getElementById(i);
+				if (img) images.removeChild(img);
+
+				var img = document.createElement('img');
+				img.id = i;
+				img.src = imgCreator.createImage({color: colors[i-1], size: i*2});
+				images.appendChild(img);
+			}
+
+			document.getElementById('gen').addEventListener('click', function(){
+				generateImage();
+			});
+
+			document.getElementById('qrCode').addEventListener('click', function(){
+				putQRCode();
+			});
+		}
+
+		function generateImage(){
+			var arr = JSON.parse(document.getElementById('json').value);
+			var size = document.getElementById('size').value;
+			var color = document.getElementById('color').value;
+			
+			var imgPreview = document.getElementById('imgJson');
+
+			imgPreview.src = imageCreator({
+				mapper: arr,
+				size: size,
+				color: color 
+			}).createImage();
+
+			showScale(arr);
+		}
+
+		function putQRCode(){
+			var qrCode = [
+				[1,1,1,1,1,1,1,0,1,0,0,1,1,0,1,0,0,0,1,1,1,1,1,1,1],
+				[1,0,0,0,0,0,1,0,0,1,1,0,0,0,0,0,1,0,1,0,0,0,0,0,1],
+				[1,0,1,1,1,0,1,0,0,0,1,0,1,1,1,0,1,0,1,0,1,1,1,0,1],
+				[1,0,1,1,1,0,1,0,0,0,0,0,1,1,0,0,1,0,1,0,1,1,1,0,1],
+				[1,0,1,1,1,0,1,0,0,1,0,1,0,1,1,0,1,0,1,0,1,1,1,0,1],
+				[1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,0,1,0,1,0,0,0,0,0,1],
+				[1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1],
+				[0,0,0,0,0,0,0,0,1,0,1,1,0,1,0,1,1,0,0,0,0,0,0,0,0],
+				[1,1,0,1,1,0,1,0,0,1,1,1,0,1,0,0,1,0,1,0,0,0,0,0,1],
+				[1,1,0,1,1,1,0,0,0,1,0,0,1,1,1,1,1,1,0,1,1,1,1,1,0],
+				[0,0,1,1,1,0,1,1,1,0,1,1,0,1,0,1,1,1,1,1,1,1,0,0,1],
+				[1,0,0,0,0,1,0,0,1,1,1,1,1,1,0,1,1,1,0,1,0,1,1,1,1],
+				[1,0,1,1,1,1,1,0,0,1,0,1,1,1,0,1,0,0,1,1,0,0,0,0,1],
+				[1,1,0,0,0,0,0,0,0,1,0,0,0,1,1,1,1,0,0,0,1,0,0,1,0],
+				[1,1,0,0,1,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1],
+				[1,0,1,1,0,0,0,1,1,0,1,1,0,0,0,1,1,0,0,1,1,0,1,0,1],
+				[1,0,0,0,1,1,1,1,0,1,0,0,0,0,1,0,1,1,1,1,1,0,1,1,0],
+				[0,0,0,0,0,0,0,0,1,0,1,1,1,1,1,0,1,0,0,0,1,0,0,1,0],
+				[1,1,1,1,1,1,1,0,0,0,1,1,0,0,0,0,1,0,1,0,1,1,0,0,1],
+				[1,0,0,0,0,0,1,0,0,0,1,0,1,0,1,1,1,0,0,0,1,0,0,1,0],
+				[1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,0,0,1],
+				[1,0,1,1,1,0,1,0,1,0,0,0,0,0,1,0,1,1,1,0,0,1,0,1,1],
+				[1,0,1,1,1,0,1,0,0,0,1,0,1,0,1,0,0,1,0,1,1,0,1,1,1],
+				[1,0,0,0,0,0,1,0,1,0,0,0,0,0,1,1,0,0,1,1,1,0,1,1,1],
+				[1,1,1,1,1,1,1,0,1,0,1,0,0,1,1,0,1,0,1,0,0,1,0,0,1]
+			];
+			
+			var strQRCode = JSON.stringify(qrCode);
+			var jsonArea = document.getElementById('json')
+			jsonArea.cols = 53;
+			jsonArea.value = strQRCode;
+		}
+
+	</script>
+
+	<style>
+		img { margin:5px;}
+	</style>
+</head>
+<body>
+	<div style="width:450px; height:500px; float:left; border-right: dashed 3px silver; margin-right:20px;">
+		<textarea id="json" cols="45" rows="15">[
+[0,0,1,0,0,0,0,0,1,0,0],
+[0,0,0,1,0,0,0,1,0,0,0],
+[0,0,0,1,0,0,0,1,0,0,0],
+[0,0,1,1,1,1,1,1,1,0,0],
+[0,0,1,0,1,1,1,0,1,0,0],
+[0,1,1,1,1,1,1,1,1,1,0],
+[1,1,1,1,1,1,1,1,1,1,1],
+[1,0,1,1,1,1,1,1,1,0,1],
+[1,0,1,1,1,1,1,1,1,0,1],
+[1,0,1,0,0,0,0,0,1,0,1],
+[1,0,1,0,0,0,0,0,1,0,1],
+[0,0,0,1,1,0,1,1,0,0,0]
+]
+		</textarea>
+		<br/>
+		<div>
+			<label for="size">Size</label>
+			<input id="size" type="text" value="10" size="2" maxlength="2" />
+			<label for="color">Color</label>
+			<input id="color" type="text" value="black" size="20"  />
+			<button id="gen">Create Image</button>
+			<br/>
+			<a id="qrCode" href="#">Try a QR Code</a>
+		</div>
+	</div>
+	<div>
+		<img id="imgJson"/>
+		<!--[js]
+			document.getElementById('imgJson').src = imageCreator({
+				mapper: arr,
+				size: size,
+				color: color 
+			}).createImage();
+		[/js]-->
+	</div>
+	<br/>
+	<hr/>
+	<div id="images"></div>
+</body>
+
+</html>
